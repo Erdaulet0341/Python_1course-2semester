@@ -1,7 +1,4 @@
 n = int(input())
-arr = []
-for i in range (n):
-    k = int(input())
-    arr.append(k)
+arr = list(map(int, input().split()))
 arr.sort()
-print(arr[n-2]*arr[n-1])
+print(arr[len(arr)-2]*arr[len(arr)-1])
