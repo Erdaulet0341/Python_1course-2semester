@@ -2,14 +2,10 @@ n = int(input())
 arr = []
 disks = []
 for i in range(n):
-    k = input()
-    if k[0] =='1':
-        arr.append(k[2:len(k)])
-        #print(arr[i])
+    k=input().split()
+    if len(k)==2:
+        arr.append(k[1])
     else:
-        g = arr[0]
-        arr.pop(0)
-        #print(arr[0])
-        disks.append(g)
+        disks.append(arr.pop(0))
         
 print(*disks, end=" ")
