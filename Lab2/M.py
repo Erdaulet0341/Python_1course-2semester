@@ -1,13 +1,14 @@
+from os import remove
+
+
 l=[]
-l1=[]
 x=-1
-cnt=0
-while x!=1:
-    s = input().split()
-    l.append(s)
-   # print(len(s))
-    x = len(s)
-t = tuple(l)
-for i in range(len(t)):
-    print(t[i][1])
-    
+while(x!=0):
+    s =input().split(' ')
+    if int(s[0])==0:
+        x=0
+    else:
+        l.append(s)
+l.sort(key = lambda x: (x[2], x[1], x[0]))
+for i in l:
+    print(*i)
