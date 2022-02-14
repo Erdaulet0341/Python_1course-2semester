@@ -1,6 +1,3 @@
-from os import remove
-
-
 l=[]
 x=-1
 while(x!=0):
