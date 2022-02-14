@@ -1,4 +1,30 @@
-def become(s):
+s = input().split('+')
+dic = {'ONE':'1', 'TWO':'2', 'THR':'3', 'FOU':'4' , 'FIV':'5',
+       'SIX':'6', 'SEV':'7', 'EIG':'8', 'NIN':'9','ZER':'0'}
+def f(s):
+    san=''
+    arip=''
+    for i in range(len(s)): #ONETWO
+        if i == len(s)-1:
+            arip+=s[i]
+        if len(arip)==3:
+            for j in dic:
+                if arip == j:
+                    san+=dic[j]
+                    arip=s[i] 
+        else:
+            arip+=s[i]
+    return san
+res = int(int(f(s[0])) + int(f(s[1])))
+st = str(res)
+answer = ''
+for i in range(len(st)): #579
+    for j in dic:
+        if st[i]==dic[j]:
+            answer+=j
+print(answer)
+
+"""def become(s):
     san=''
     arip=''
     k=len(s)
@@ -59,4 +85,4 @@ for i in st:
         san+="NIN"
     elif i=="0":
         san+="ZER"
-print(san)
+print(san)"""
