@@ -1,9 +1,8 @@
-def count_catelogy(dic, s):
-    
+def imbd_less(dic):
     for i in dic:
-        if i=='category':
-            if dic[i]==s:
-                print(dic)
+        if i=='imdb':
+            if dic[i]>5.5:
+               print(dic)
             
             
             
@@ -86,6 +85,5 @@ movies = [
 }
 ]
 
-s = input()
-for i in range(len(movies)):
-    count_catelogy(movies[i], s)
+for i in range(len(movies)-1):
+    imbd_less(movies[i])

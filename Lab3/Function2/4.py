@@ -1,9 +1,13 @@
-def count_catelogy(dic, s):
-    
-    for i in dic:
-        if i=='category':
-            if dic[i]==s:
-                print(dic)
+def avarage_imdb(arr):
+    sum=0
+    for dic in arr:
+        for i in dic:
+            if i=="imdb":
+                sum+=dic[i]
+                
+    return(sum/(len(arr)))
+                
+                
             
             
             
@@ -85,7 +89,4 @@ movies = [
 "category": "Romance"
 }
 ]
-
-s = input()
-for i in range(len(movies)):
-    count_catelogy(movies[i], s)
+print(avarage_imdb(movies))
