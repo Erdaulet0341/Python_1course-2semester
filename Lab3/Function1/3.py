@@ -1,6 +1,11 @@
 def solve(numheads, numlegs):
-    y = numlegs - 2*y
-    y = numheads
+    k = 4*numheads
+    l=k-numlegs
+    rabbit =  int(l /2)
+    chicken = int(numheads - rabbit)
+    print(f'Rabbits = {rabbit}')
+    print(f'Chickens = {chicken}')
+
     
 a,b=map(int, input().split())
 solve(a,b)
