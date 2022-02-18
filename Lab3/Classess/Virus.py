@@ -5,7 +5,7 @@ bgcolor('white')
 b = 200
 while b>0:
     left(b)
-    forward(b * 3)
+    forward(b * 2)
     b = b-1
     
 print('441')

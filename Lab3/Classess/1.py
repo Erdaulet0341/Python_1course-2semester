@@ -1,17 +1,11 @@
-import string
-
-
-class Years_cars:
-    def __init__(self, string):
-        self.string = string
-    
-    def getString(self):
-        string = input()
+class console():
+    def getString(self, s):
+        self.s = s
         
     def printString(self):
-        string = string.upper()
-        print(f'{string}')
+        print(self.s.upper())
         
-qaz = Years_cars()
-qaz.getString()
-qaz.printString()
+cl = console()
+
+cl.getString(input())
+cl.printString()
