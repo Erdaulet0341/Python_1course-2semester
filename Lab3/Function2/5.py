@@ -1,10 +1,13 @@
 def avarage_category(arr,s):
     sum=0
+    cnt=0
     for dic in arr:
         for i in dic:
             if dic[i] == s:
                 sum+=dic['imdb']
-    return sum
+                cnt+=1
+                
+    return sum/cnt
                     
                     
             
