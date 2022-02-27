@@ -7,8 +7,8 @@ with open("Sample-data.json", "r") as json_file:
 print("\n")    
 print("Interface status")
 print('==========================================================================')
-print("DN                           Discription     Mode       Speed      MTU")          
-print('---------------------------  --------------  -----------  ---------  ----')
+print("DN                                          Discription     Speed      MTU")          
+print('----------------------------------------    --------------  ---------  ----')
 
 imdata = json_["imdata"]
 cnt = 10
@@ -19,5 +19,4 @@ for i in range(len(imdata)):
             cnt+=1
             speed= imdata[i][j][k]['speed']
             mtu = imdata[i][j][k]['mtu']
-            mode = imdata[i][j][k]['mode']
-            print(F"imdata/l1PhysIf/attributes/phys-[eth1/{cnt}]    {mode}       {speed}     {mtu}")
+            print(F"topology/pod-1/node-201/sys/phys-[eth1/{cnt}]                  {speed}     {mtu}")
