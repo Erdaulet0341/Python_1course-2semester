@@ -11,12 +11,13 @@ print("DN                                          Discription     Speed      MT
 print('----------------------------------------    --------------  ---------  ----')
 
 imdata = json_["imdata"]
-cnt = 10
+cnt = 0
 
 for i in range(len(imdata)):
     for j in imdata[i]:
         for k in imdata[i][j]:
-            cnt+=1
             speed= imdata[i][j][k]['speed']
             mtu = imdata[i][j][k]['mtu']
             print(F"topology/pod-1/node-201/sys/phys-[eth1/{cnt}]                  {speed}     {mtu}")
+            cnt+=1
+        
