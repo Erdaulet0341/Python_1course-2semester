@@ -18,6 +18,3 @@ for i in range(len(imdata)):
             dn = imdata[i][j][k]['dn']
             if dn.find('33')>0 or dn.find('34')>0 or dn.find('35')>0:
                 print(f'{dn}                   {speed}    {mtu}')
-            
-            
-        
