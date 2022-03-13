@@ -1,5 +1,11 @@
-def snake_to_camel(word):
-        import re
-        return ''.join(x.capitalize() or '_' for x in word.split('_'))
+import re
 
-print(snake_to_camel('python_exercises'))
+word = input()
+c = ''
+for i in range(len(word)):
+    if word[i] == '_':
+        c = word[i+1]
+        c = c.upper()
+
+k = re.sub('[_][a-z]', c, word)
+print(k)
