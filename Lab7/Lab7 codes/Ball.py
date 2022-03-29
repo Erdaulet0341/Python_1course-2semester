@@ -11,8 +11,8 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
 
-x = 220
-y = 200
+x = 0
+y = 0
 speed = 25
 do = False
 
