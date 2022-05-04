@@ -1,5 +1,49 @@
 import pygame, sys
 import random, time
+import psycopg2
+from config import config
+
+score_last = 4
+    
+print("Enter your username: ")
+username = input()
+
+
+sql = """
+    SELECT * FROM snake_game_users WHERE username = %s;
+    """
+update = """
+        UPDATE snake_game_score
+        SET last_score = %s
+        WHERE username = %s
+    """
+    
+conn = None
+try:
+        
+        params = config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        cur.execute(sql, [username])
+        
+        dt = cur.fetchone()
+        
+        if dt == None:
+            insert = f"""
+            INSERT INTO snake_game_users VALUES(%s, {score_last});
+            """
+            cur.execute(insert, [username])
+            conn.commit()
+        
+        cur.execute(sql, [username])
+        dt = cur.fetchone()
+        
+except Exception as e:
+        print(str(e))
+finally:
+        if conn is not None:
+            conn.close()
+
 
 BLACK = (0, 0, 0)
 LINE_COLOR = (50, 50, 50)
@@ -33,6 +77,15 @@ class Snake:
         self.body = [Point(10, 11)]
         self.dx = 1
         self.dy = 0
+    
+    def collide_self(self):  # проверка столкновения с самим собой
+        global running
+        if self.body[0] in self.body[2:]:
+          running = False
+          cur.execute(update,(score,username))
+          cur.close()
+          config.commit()
+          config.close() 
 
 
     def move(self):    
@@ -80,6 +133,7 @@ class Snake:
                 if score % 5 == 0:
                     score += 3
                     FPS += 0.7
+                    
 
     def change_position(self, food):
         food.location = Point(random.randint(1, 19), random.randint(1, 19))
@@ -92,8 +146,8 @@ class Snake:
                 sys.exit()
 
 
-def main():
-    global SCREEN, CLOCK
+def first():
+    global SCREEN, CLOCK, score_last
     pygame.init()
     SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
     CLOCK = pygame.time.Clock()
@@ -129,6 +183,11 @@ def main():
         for block in snake.body[1:]:
             while block == food.location:
                 food.draw()
+                if snake.body[0][0] == block.x and snake.body[0][1] == block.y:
+                    cur.execute(update,(score,username))
+                    cur.close()
+                    config.commit()
+                    config.close() 
 
         second1 = int(time.time())
         second2 = int(time.time()+5)
@@ -154,7 +213,8 @@ def main():
 
         pygame.display.update()
         CLOCK.tick(FPS)
-
+        score_last += score
+        
 
 def drawGrid():
     for x in range(0, WIDTH, BLOCK_SIZE):
@@ -162,5 +222,4 @@ def drawGrid():
             rect = pygame.Rect(x, y, BLOCK_SIZE, BLOCK_SIZE)
             pygame.draw.rect(SCREEN, LINE_COLOR, rect, 1)
 
-
-main()
+first()
