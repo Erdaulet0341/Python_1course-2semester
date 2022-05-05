@@ -1,10 +1,10 @@
 """
-create or replace function get_number(name varchar)
+create or replace function get_numbe(name varchar)
 returns TABLE(phone_number varchar) as
 $$
 begin
     return query
-    select accounts.phone_number from accounts where accounts.first_name = name;
+    select phonebook.phone_number from phonebook where phonebook.first_name = name;
 end;
 $$
 language plpgsql;

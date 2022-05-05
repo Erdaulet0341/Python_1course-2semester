@@ -1,48 +1,10 @@
 import pygame, sys
 import random, time
 import psycopg2
+from datetime import datetime
 from config import config
-
-score_last = 4
     
-print("Enter your username: ")
-username = input()
-
-
-sql = """
-    SELECT * FROM snake_game_users WHERE username = %s;
-    """
-update = """
-        UPDATE snake_game_score
-        SET last_score = %s
-        WHERE username = %s
-    """
-    
-conn = None
-try:
-        
-        params = config()
-        conn = psycopg2.connect(**params)
-        cur = conn.cursor()
-        cur.execute(sql, [username])
-        
-        dt = cur.fetchone()
-        
-        if dt == None:
-            insert = f"""
-            INSERT INTO snake_game_users VALUES(%s, {score_last});
-            """
-            cur.execute(insert, [username])
-            conn.commit()
-        
-        cur.execute(sql, [username])
-        dt = cur.fetchone()
-        
-except Exception as e:
-        print(str(e))
-finally:
-        if conn is not None:
-            conn.close()
+username = input("Enter your username: ")
 
 
 BLACK = (0, 0, 0)
@@ -51,7 +13,7 @@ HEIGHT = 400
 WIDTH = 400
 BLOCK_SIZE = 20
 score = 0
-level_cnt = 1
+level_cnt = 0
 FPS = 5
 
 
@@ -77,15 +39,6 @@ class Snake:
         self.body = [Point(10, 11)]
         self.dx = 1
         self.dy = 0
-    
-    def collide_self(self):  # проверка столкновения с самим собой
-        global running
-        if self.body[0] in self.body[2:]:
-          running = False
-          cur.execute(update,(score,username))
-          cur.close()
-          config.commit()
-          config.close() 
 
 
     def move(self):    
@@ -140,14 +93,28 @@ class Snake:
 
     
     def check_fail(self):
+        global score, level_cnt
         for block in self.body[1:]:
             if self.body[0].x == block.x and self.body[0].y == block.y:
+                par = config()
+                con = psycopg2.connect(**par)
+                cr = con.cursor()
+                now = datetime.now()
+                tm = now.strftime("%d/%m/%Y %H:%M:%S")
+                ins = f"""
+                        INSERT INTO snake_game_users(username, last_score, last_level, last_time)
+                        VALUES(%s, %s, %s, %s)
+                        """
+                cr.execute(ins, (username, score, level_cnt, tm))
+                con.commit()
+                cr.close()
+                print("[INFO] ~~~~~~~~~ GAME OVER!")
                 pygame.quit()
-                sys.exit()
+                sys.exit()                
 
 
 def first():
-    global SCREEN, CLOCK, score_last
+    global SCREEN, CLOCK
     pygame.init()
     SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
     CLOCK = pygame.time.Clock()
@@ -161,7 +128,21 @@ def first():
     food = Food()
     while True:
         for event in pygame.event.get():
+            global score, level_cnt
             if event.type == pygame.QUIT:
+                par = config()
+                con = psycopg2.connect(**par)
+                cr = con.cursor()
+                now = datetime.now()
+                tm = now.strftime("%d/%m/%Y  %H:%M:%S")
+                ins = f"""
+                        INSERT INTO snake_game_users(username, last_score, last_level, last_time)
+                        VALUES(%s, %s, %s, %s)
+                        """
+                cr.execute(ins, (username, score, level_cnt, tm))
+                con.commit()
+                cr.close()
+                print("[INFO] ~~~~~~~~~ GAME OVER!")
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
@@ -183,11 +164,6 @@ def first():
         for block in snake.body[1:]:
             while block == food.location:
                 food.draw()
-                if snake.body[0][0] == block.x and snake.body[0][1] == block.y:
-                    cur.execute(update,(score,username))
-                    cur.close()
-                    config.commit()
-                    config.close() 
 
         second1 = int(time.time())
         second2 = int(time.time()+5)
@@ -213,7 +189,6 @@ def first():
 
         pygame.display.update()
         CLOCK.tick(FPS)
-        score_last += score
         
 
 def drawGrid():

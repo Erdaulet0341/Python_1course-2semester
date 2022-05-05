@@ -5,7 +5,9 @@ def create_table():
     sql =  """
         CREATE TABLE snake_game_users (
             username VARCHAR (20),
-            last_score INT
+            last_score INT,
+            Last_level INT,
+            last_time VARCHAR
         );
     """
     conn = None
