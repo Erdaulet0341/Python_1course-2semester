@@ -101,6 +101,23 @@ class Snake:
                 cr = con.cursor()
                 now = datetime.now()
                 tm = now.strftime("%d/%m/%Y %H:%M:%S")
+                
+                cr.execute("SELECT * FROM snake_game_users")
+                for user in cr.fetchall():
+                    if user[0] == username:
+                        up = """
+                            UPDATE snake_game_users
+                            SET last_score = %s,
+                            last_level = %s,
+                            last_time = %s
+                            where username = %s
+                        """
+                        cr.execute(up, (score, level_cnt, tm, username))
+                        con.commit()
+                        cr.close()
+                        print("[INFO] game over!!!")
+                        exit()
+                
                 ins = f"""
                         INSERT INTO snake_game_users(username, last_score, last_level, last_time)
                         VALUES(%s, %s, %s, %s)
@@ -109,6 +126,7 @@ class Snake:
                 con.commit()
                 cr.close()
                 print("[INFO] ~~~~~~~~~ GAME OVER!")
+                
                 pygame.quit()
                 sys.exit()                
 
@@ -134,7 +152,24 @@ def first():
                 con = psycopg2.connect(**par)
                 cr = con.cursor()
                 now = datetime.now()
-                tm = now.strftime("%d/%m/%Y  %H:%M:%S")
+                tm = now.strftime("%d/%m/%Y %H:%M:%S")
+                
+                cr.execute("SELECT * FROM snake_game_users")
+                for user in cr.fetchall():
+                    if user[0] == username:
+                        up = """
+                            UPDATE snake_game_users
+                            SET last_score = %s,
+                            last_level = %s,
+                            last_time = %s
+                            where username = %s
+                        """
+                        cr.execute(up, (score, level_cnt, tm, username))
+                        con.commit()
+                        cr.close()
+                        print("[INFO] game over!!!")
+                        exit()
+                
                 ins = f"""
                         INSERT INTO snake_game_users(username, last_score, last_level, last_time)
                         VALUES(%s, %s, %s, %s)
@@ -143,6 +178,7 @@ def first():
                 con.commit()
                 cr.close()
                 print("[INFO] ~~~~~~~~~ GAME OVER!")
+                
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
